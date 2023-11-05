@@ -1,0 +1,15 @@
+npm install @prisma/client
+
+npx prisma init
+
+npx prisma generate
+
+npx prisma db push
+
+*Reset the entire database:
+npx prisma migrate reset
+
+
+
+
+

@@ -17,15 +17,15 @@ export async function POST(req: Request) {
   if (hash == req.headers.get("x-paystack-signature")) {
     // Retrieve the request's body
     const payload = body;
-    // Do something with payload
 
-    console.log(payload);
+    // Destructure all the data gotten from payload
+    // Do something with payload data
     const {
       event,
       data: { status, reference, amount, gateway_response },
     } = payload;
     // Here knock yourself out 😊.
-    // Charge was indeed successful
+    // If Charge was indeed successful.
     if (
       status === "success" &&
       event === "charge.success" &&
@@ -50,7 +50,7 @@ export async function POST(req: Request) {
       if (
         verifyData.status === true &&
         verifyData.data.status === "success" &&
-        reference === verifyData.data.reference
+        verifyData.data.reference === reference
       ) {
         // Update payment status
         await prismadb.order.update({
@@ -64,19 +64,14 @@ export async function POST(req: Request) {
         });
 
         console.log("------------ VerifyData Working... ----------");
-        // console.log(verifyData);
       }
     }
 
-    return NextResponse.json(
-      { message: "It worked", payload },
-      { status: 200 }
-    );
+    return NextResponse.json({ message: "It worked" }, { status: 200 });
   }
-
   // Do nothing here if the event hook was not a success.
 
-  return NextResponse.json({ message: "Not Successfull" }, { status: 200 });
+  return NextResponse.json({ message: "Not Successfull" }, { status: 400 });
 }
 
 export async function GET(req: Request) {

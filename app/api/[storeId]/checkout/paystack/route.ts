@@ -1,7 +1,6 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 import { prismadb } from "@/lib/prismadb";
-import { v4 as uuidv4 } from "uuid";
 
 const corsHeader = {
   "Access-Control-Allow-Origin": "*",
@@ -43,6 +42,7 @@ export async function POST(
   const response = await axiosApi.post("/transaction/initialize", data);
 
   const derivedData = response.data;
+
   if (response.status === 200) {
     console.log(derivedData.data.reference);
 
@@ -55,7 +55,7 @@ export async function POST(
     });
 
     const allOrders = products.map((product) => ({
-      // All product attributes
+      // All product id attributes
       productId: product.id,
     }));
 
@@ -73,8 +73,6 @@ export async function POST(
         },
       },
     });
-
-
   }
 
   return NextResponse.json(derivedData, { status: 200, headers: corsHeader });
